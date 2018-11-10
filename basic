@@ -1,15 +1,20 @@
 #!/bin/bash
 sudo passwd -l root
 echo root account locked
+read -n 1
 
 sudo updatedb
 echo database updated
+read -n 1
 
 sudo apt-get -y update
 echo updated 
+read -n 1
 
 sudo ufw enable
 echo firewall enabled
+read -n 1
 
 sudo sysctl -n net.ipv4.tcp_syncookies
 echo cookies secured
+read -n 1
