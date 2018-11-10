@@ -1,0 +1,21 @@
+#!/bin/bash
+for i in $(cat downloadprograms)
+    do
+    sudo apt-get install -y -q $i
+done
+echo "$(cat downloadprograms) downloaded";
+read -n 1;
+
+loop=true;
+
+while $loop; 
+    do
+    read -p "What programs you like to download more?: " program
+    if [ $program == 'quit' ]; then
+        echo "Ending script..."
+        loop=false;
+    else
+        echo "Downloading $program ...";
+        sudo apt-get install -q -y $program;
+    fi
+done
