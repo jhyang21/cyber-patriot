@@ -1,0 +1,15 @@
+#!/bin/bash
+service --status-all;
+loop=true;
+
+while $loop; 
+    do
+    read -p "What services would you like to stop?: " service
+    if [ $service == 'quit' ]; then
+        echo "Ending script"
+        loop=false;
+    else
+        echo "Stopping $service";
+        sudo service $service stop;
+    fi
+done
