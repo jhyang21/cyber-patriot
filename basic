@@ -1,20 +1,28 @@
 #!/bin/bash
 sudo passwd -l root
-echo root account locked
+echo Root account locked.
 read -n 1
 
 sudo updatedb
-echo database updated
+echo Database updated.
 read -n 1
 
 sudo apt-get -y update
-echo updated 
+echo Available updates updated. 
 read -n 1
 
 sudo ufw enable
-echo firewall enabled
+echo Firewall enabled.
 read -n 1
 
 sudo sysctl -n net.ipv4.tcp_syncookies
-echo cookies secured
+echo Cookies secured.
 read -n 1
+
+for $i in $(cat users)
+  do
+  sudo deluser $i sudo
+  sudo passwd $1 PASSword1234!!!
+done
+echo All users demoted.
+echo All passwords changed.
