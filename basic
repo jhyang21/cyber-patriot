@@ -1,0 +1,15 @@
+#!/bin/bash
+sudo passwd -l root
+echo root account locked
+
+sudo updatedb
+echo database updated
+
+sudo apt-get -y update
+echo updated 
+
+sudo ufw enable
+echo firewall enabled
+
+sudo sysctl -n net.ipv4.tcp_syncookies
+echo cookies secured
