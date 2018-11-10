@@ -1,0 +1,60 @@
+while [ "$SEL" != q ]; do
+cat >&2 << MENU
+
+Enter a number to launch:
+    a - Create a File
+    b - Create a Directory
+    c - Delete a File
+    d - Delete a Directory
+    e - Create a User
+    f - Delete a User
+    q - Exit
+MENU
+    printf "\n  Enter your choice: "
+    read SEL
+    SEL=${SEL,,}
+    case $SEL in
+        a ) printf "\nWhat would you like to name your File?\n"
+            printf "(including the path to the file location): "
+            read -r fname
+            [ -n $fname ] && touch "$fname" || \
+            printf "error: invalid filename.\n"
+            unset fname
+            ;;
+        b ) printf "\nWhat would you like to name your Directory?\n"
+            printf "(including the path to the directory location): "
+            read -r dname
+            [ -n $dname ] && mkdir -p "$dname" || \
+            printf "error: invalid directory name.\n"
+            unset dname
+            ;;
+        c ) printf "\nWhat File would you lime to delete?\n"
+            printf "(including path): "
+            read -r fname
+            [ -w "$fname" ] && rm "$fname" || \
+            printf "error: invalid filename or insufficent permission.\n"
+            unset fname
+            ;;
+        d ) printf "\nWhat Directory would you lime to delete?\n"
+            printf "(including path): "
+            read -r dname
+            [ -d "$dname" -a -w "$dname" ] && rm -r "$dname" || \
+            printf "error: invalid directory or insufficent permission.\n"
+            unset dname
+            ;;
+        e ) printf "\nEnter user name to add: "
+            read -r uname
+            [ -n $uname ] && useradd $uname
+            unset uname
+            ;;
+        f ) printf "\nEnter user name to delete: "
+            read -r uname
+            [ -n $uname ] && userdel $uname
+            unset uname
+            ;;
+        q ) exit 0
+            ;;
+        * ) printf "\nError. Please enter a valid selection.\n"
+            ;;
+    esac
+done
