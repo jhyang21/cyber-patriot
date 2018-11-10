@@ -1,0 +1,16 @@
+#!/bin/bash
+loop=true;
+
+while $loop; 
+    do
+    read -p "What programs you like to delete?: " program
+    if [ $program == 'quit' ]; then
+        echo "Ending script..."
+        loop=false;
+    else
+        echo "Deleting $program ...";
+        sudo apt-get purge -q -y $program;
+    fi
+done
+
+
