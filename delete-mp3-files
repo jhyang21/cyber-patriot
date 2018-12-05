@@ -1,19 +1,25 @@
 #!/bin/bash
 locate *.mp3
-echo MP3 files located.
+locate *.mp4
+echo MP3 & MP4 files located.
 read -p "Would you like to delete the music files? [y/n]: " delConf
 
 if [ $delConf == 'n' ]; then
    echo "Ending script..."
 else
-   echo "Deleting music files...";
+   echo "Deleting media files...";
    
    for i in $(locate *.mp3)
  		do
 	    sudo rm $i
    done
    
-   echo MP3 files deleted.
+   for i in $(locate *.mp4)
+ 		do
+	    sudo rm $i
+   done
+   
+   echo media files deleted.
 fi
 
 
