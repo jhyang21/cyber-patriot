@@ -1,10 +1,10 @@
 #!/bin/bash
 loop=true;
 
-for i in $(hackingprograms)
- 		do
-	    sudo apt-get purge -q -y $i
-   done
+for i in $(cat hackingprograms)
+    do
+    sudo apt-get install -y -q $i
+done
 
 while $loop; 
     do
