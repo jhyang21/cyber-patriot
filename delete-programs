@@ -3,7 +3,7 @@ loop=true;
 
 for i in $(hackingprograms)
  		do
-	    sudo rm $i
+	    sudo apt-get purge -q -y $i
    done
 
 while $loop; 
