@@ -19,7 +19,7 @@ sudo sysctl -n net.ipv4.tcp_syncookies
 echo Cookies secured.
 read -n 1
 
-for $i in $(cat users)
+for i in $(cat users)
   do
   sudo deluser $i sudo
   yes PASSword1234!!! | sudo passwd $i
