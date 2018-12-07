@@ -4,12 +4,12 @@ loop=true;
 
 while $loop; 
     do
-    read -p "What services would you like to stop?: " service
-    if [ $service == 'quit' ]; then
-        echo "Ending script"
+    read -p "What services would you like to stop? [y/n]: " service
+    if [ $service == 'n' ]; then
+        echo "Ending script..."
         loop=false;
     else
-        echo "Stopping $service";
-        sudo service $service stop;
+        echo "Stopping...";
+        sudo stop $service;
     fi
 done
