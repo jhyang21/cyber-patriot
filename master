@@ -1,0 +1,235 @@
+#!/bin/bash
+
+##############################################
+
+read -p "Would you like to lock root account? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo passwd -l root
+    echo Root account locked.
+fi
+
+##############################################
+
+read -p "Would you like to create a group for everyone? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo groupadd everyone
+    for i in $(cat users)
+        do
+        sudo usermod -a -G everyone $i 
+    done
+fi
+    
+##############################################
+
+read -p "Would you like to update database?? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo updatedb
+    echo Database updated.
+fi
+
+##############################################
+
+read -p "Would you like to enable automatic security updates? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo apt-get install -q -y unattended-upgrades
+    sudo dpkg-reconfigure -plow unattended-upgrades
+fi
+
+##############################################
+
+sudo swapon -s
+read -p "Would you like to add a SWAP partition? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo dd if=/dev/zero of=/swapfile bs=4M count=1000
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+    sudo echo 0 >> /proc/sys/vm/swappiness
+    sudo echo vm.swappiness = 0 >> /etc/sysctl.conf   
+    sudo swapon -s
+    
+fi
+
+##############################################
+
+read -p "Would you like to disable IPv6? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+    sudo echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+    sudo echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
+    sudo sysctl -p
+
+fi
+
+##############################################
+
+read -p "Would you like to disable IRQBALANCE? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    echo Change the ENABLED value to 0.
+    sudo gedit /etc/default/irqbalance
+fi
+
+##############################################
+
+read -p "Would you like to secure the console? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    echo Allow only few terminals and comment the others.
+    sudo gedit /etc/securetty
+    sudo chown root:root /etc/securetty
+    sudo chmod 0600 /etc/securetty
+fi
+
+##############################################
+
+read -p "Would you like to secure shared memory? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo echo "tmpfs     /run/shm    tmpfs     ro,noexec,nosuid        0       0" >> /etc/fstab
+    sudo mount -a
+fi
+
+##############################################
+
+read -p "Would you like to secure temp memory? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo dd if=/dev/zero of=/usr/tmpDSK bs=1024 count=1024000
+    sudo mkfs.ext4 /usr/tmpDSK
+    sudo cp -avr /tmp /tmpbackup
+    sudo mount -t tmpfs -o loop,noexec,nosuid,rw /usr/tmpDSK /tmp
+    sudo chmod 1777 /tmp
+    sudo cp -avr /tmpbackup/* /tmp/
+    sudo rm -rf /tmpbackup
+    sudo echo "/usr/tmpDSK /tmp tmpfs loop,nosuid,noexec,rw 0 0" >> /etc/fstab
+    sudo mount -a
+    sudo mv /var/tmp /var/tmpold
+    sudo ln -s /tmp /var/tmp
+    sudo cp -avr /var/tmpold/* /tmp
+fi
+
+##############################################
+
+read -p "Would you like to secure temp memory? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo echo "@everyone hard nproc 20" >>     
+##############################################
+
+
+
+read -p "Would you like to update? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+sudo apt-get -q -y update
+sudo apt-get -q -y upgrade
+sudo apt-get -q -y autoremove
+sudo apt-get -q -y autoclean
+echo Updated. 
+fi
+
+##############################################
+
+read -p "Would you like to enable firewall? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+sudo ufw enable
+echo Firewall enabled.
+fi
+
+##############################################
+
+read -p "Would you like to secure cookies? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+sudo sysctl -n net.ipv4.tcp_syncookies
+echo Cookies secured.
+fi
+
+##############################################
+
+read -p "Would you like to demote all users and change password? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+for i in $(cat users)
+  do
+  sudo deluser $i sudo
+  yes PASSword1234!!! | sudo passwd $i
+done
+echo All users demoted.
+echo All passwords changed to PASSword1234!!!.
+fi
+
+##############################################
+
+read -p "Would you like to locate MP3 and MP4 files? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+locate *.mp3
+locate *.mp4
+echo MP3, MP4 files located.
+read -p "Would you like to delete the media files? [y/n]: " delConf
+    if [ $delConf == 'y' ]; then
+        echo "Deleting media files...";
+        for i in $(locate *.mp3)
+            do
+            sudo rm $i
+        done
+   
+        for i in $(locate *.mp4)
+            do
+            sudo rm $i
+        done
+        sudo updatedb
+        echo media files deleted.
+    fi
+fi
+
+##############################################
+
+
+read -p "Would you like to delete programs? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    loop=true;
+
+    for i in $(cat hackingprograms)
+        do
+        sudo apt-get purge -y -q $i
+    done
+    
+    gnome-terminal -e "dpkg -l | less"
+    while $loop; 
+        do
+        read -p "What programs would you like to delete?: " program
+        if [ $program == 'quit' ]; then
+            echo "Ending script..."
+            loop=false;
+        else
+            echo "Deleting $program ...";
+            sudo apt-get purge -q -y $program;
+        fi
+    done
+fi
+
+##############################################
+
+read -p "Would you like to download programs? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    for i in $(cat downloadprograms)
+        do
+        sudo apt-get install -y -q $i
+    done
+    echo "$(cat downloadprograms) downloaded";
+
+##############################################
+
+sudo initctl list | grep running 
+read -p "Would you like to stop services? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    loop=true;
+
+    while $loop; 
+        do
+        read -p "What services would you like to stop? : " service
+        if [ $service == 'quit' ]; then
+            echo "Ending script..."
+            loop=false
+        else
+            sudo update-rc.d -f $service remove
+            sudo apt-get purge $service
+        fi
+    done
+fi
+
+##############################################
