@@ -233,3 +233,11 @@ if [ $delConf == 'y' ]; then
 fi
 
 ##############################################
+
+read -p "Would you like to stop services? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
+    sudo restart lightdm
+    
+##############################################
+    
