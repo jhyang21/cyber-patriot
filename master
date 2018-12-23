@@ -109,7 +109,8 @@ fi
 
 read -p "Would you like to secure temp memory? [y/n]: " delConf
 if [ $delConf == 'y' ]; then
-    sudo echo "@everyone hard nproc 20" >>     
+    sudo echo "@everyone hard nproc 20" >> /etc/security/limits.conf
+fi
 ##############################################
 
 
