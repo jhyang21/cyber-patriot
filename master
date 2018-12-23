@@ -212,7 +212,7 @@ if [ $delConf == 'y' ]; then
         sudo apt-get install -y -q $i
     done
     echo "$(cat downloadprograms) downloaded";
-
+fi
 ##############################################
 
 sudo initctl list | grep running 
