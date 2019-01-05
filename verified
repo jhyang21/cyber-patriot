@@ -2,30 +2,13 @@
 
 ##############################################
 
-read -p "Would you like to lock root account? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
     sudo passwd -l root
     echo Root account locked.
-fi
 
 ##############################################
 
-read -p "Would you like to create a group for everyone? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-    sudo groupadd everyone
-    for i in $(cat users)
-        do
-        sudo usermod -a -G everyone $i 
-    done
-fi
-    
-##############################################
-
-read -p "Would you like to update database?? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
     sudo updatedb
     echo Database updated.
-fi
 
 ##############################################
 
@@ -51,32 +34,12 @@ fi
 
 ##############################################
 
-read -p "Would you like to enable firewall? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
 sudo ufw enable
-echo Firewall enabled.
-fi
 
 ##############################################
 
-read -p "Would you like to secure cookies? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
 sudo sysctl -n net.ipv4.tcp_syncookies
 echo Cookies secured.
-fi
-
-##############################################
-
-read -p "Would you like to demote all users and change password? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-for i in $(cat users)
-  do
-  sudo deluser $i sudo
-  yes PASSword1234!!! | sudo passwd $i
-done
-echo All users demoted.
-echo All passwords changed to PASSword1234!!!.
-fi
 
 ##############################################
 
@@ -104,43 +67,17 @@ fi
 
 ##############################################
 
-read -p "Would you like to delete programs? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-    loop=true;
-
-    for i in $(cat hackingprograms)
-        do
-        sudo apt-get purge -y -q $i
-    done
-    
-    gnome-terminal -e "dpkg -l | less"
-    while $loop; 
-        do
-        read -p "What programs would you like to delete?: " program
-        if [ $program == 'quit' ]; then
-            echo "Ending script..."
-            loop=false;
-        else
-            echo "Deleting $program ...";
-            sudo apt-get purge -q -y $program;
-        fi
-    done
-fi
+for i in $(cat hackingprograms)
+    do
+    sudo apt-get purge -y -q $i
+done
 
 ##############################################
-
-read -p "Would you like to download programs? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
     for i in $(cat downloadprograms)
         do
         sudo apt-get install -y -q $i
     done
     echo "$(cat downloadprograms) downloaded";
-fi
 ##############################################
-
-read -p "Would you like to stop guest log in? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
     sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
     sudo restart lightdm
-fi
