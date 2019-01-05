@@ -1,11 +1,6 @@
 #!/bin/bash
 loop=true;
 
-for i in $(cat hackingprograms)
-    do
-    sudo apt-get install -y -q $i
-done
-
 while $loop; 
     do
     read -p "What programs you like to delete?: " program
