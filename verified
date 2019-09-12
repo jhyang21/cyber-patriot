@@ -69,7 +69,7 @@ fi
 
 for i in $(cat hackingprograms)
     do
-    sudo apt-get purge -y -q $i
+    sudo apt-get purge --auto - remove -y -q $i
 done
 
 ##############################################
