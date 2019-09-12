@@ -9,7 +9,7 @@ while $loop;
         loop=false;
     else
         echo "Deleting $program ...";
-        sudo apt-get purge -q -y $program;
+        sudo apt-get purge --auto-remove -q -y $program;
     fi
 done
 
