@@ -12,47 +12,7 @@
 
 ##############################################
 
-read -p "Would you like to disable IPv6? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-    sudo echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
-    sudo echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
-    sudo echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
-    sudo sysctl -p
-
-fi
-
-##############################################
-
 sudo ufw enable
-
-##############################################
-
-sudo sysctl -n net.ipv4.tcp_syncookies
-echo Cookies secured.
-
-##############################################
-
-read -p "Would you like to locate MP3 and MP4 files? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-locate *.mp3
-locate *.mp4
-echo MP3, MP4 files located.
-read -p "Would you like to delete the media files? [y/n]: " delConf
-    if [ $delConf == 'y' ]; then
-        echo "Deleting media files...";
-        for i in $(locate *.mp3)
-            do
-            sudo rm $i
-        done
-   
-        for i in $(locate *.mp4)
-            do
-            sudo rm $i
-        done
-        sudo updatedb
-        echo media files deleted.
-    fi
-fi
 
 ##############################################
 
@@ -62,11 +22,6 @@ for i in $(cat hackingprograms)
 done
 
 ##############################################
-    for i in $(cat downloadprograms)
-        do
-        sudo apt-get install -y -q $i
-    done
-    echo "$(cat downloadprograms) downloaded";
-##############################################
+
     sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
     sudo restart lightdm
