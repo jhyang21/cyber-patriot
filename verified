@@ -2,13 +2,11 @@
 
 ##############################################
 
-    sudo passwd -l root
-    echo Root account locked.
+sudo passwd -l root
 
 ##############################################
 
-    sudo updatedb
-    echo Database updated.
+sudo updatedb
 
 ##############################################
 
@@ -16,12 +14,61 @@ sudo ufw enable
 
 ##############################################
 
-for i in $(cat hackingprograms)
-    do
-    sudo apt-get purge --auto - remove -y -q $i
-done
+read -p "Would you like to delete programs? [y/n]: " delConf
+if [ $delConf == 'y' ]; then
+    loop=true;
+
+    for i in $(cat hackingprograms)
+        do
+        sudo apt-get purge -y -q $i
+    done
+    
+    gnome-terminal -e "dpkg -l | less"
+    while $loop; 
+        do
+        read -p "What programs would you like to delete?: " program
+        if [ $program == 'quit' ]; then
+            echo "Ending script..."
+            loop=false;
+        else
+            echo "Deleting $program ...";
+            sudo apt-get purge -q -y $program;
+        fi
+    done
+fi
 
 ##############################################
 
-    sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
-    sudo restart lightdm
+sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
+sudo restart lightdm
+
+##############################################
+
+for i in $(cat downloadprograms)
+    do
+        sudo apt-get install -y -q $i
+    done
+    
+##############################################
+
+sudo echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+sudo echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+sudo echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
+sudo sysctl -p
+    
+##############################################
+sudo gedit /etc/securetty
+sudo chown root:root /etc/securetty
+sudo chmod 0600 /etc/securetty
+sudo echo "@everyone hard nproc 20" >> /etc/security/limits.conf
+##############################################
+sudo apt-get -q -y update
+sudo apt-get -q -y upgrade
+sudo apt-get -q -y autoremove
+sudo apt-get -q -y autoclean
+##############################################
+##############################################
+##############################################
+##############################################
+##############################################
+##############################################
