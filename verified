@@ -19,15 +19,12 @@ sudo ufw enable
 
 ##############################################
 
-read -p "Would you like to delete programs? [y/n]: " delConf
-if [ $delConf == 'y' ]; then
-    loop=true;
 
-    for i in $(cat hackingprograms)
-        do
+for i in $(cat hackingprograms)
+    do
         sudo apt-get purge -y -q $i
     done
-fi
+
 
 ##############################################
 
@@ -54,13 +51,6 @@ sudo chown root:root /etc/securetty
 sudo chmod 0600 /etc/securetty
 sudo echo "@everyone hard nproc 20" >> /etc/security/limits.conf
 ##############################################
-sudo apt-get -q -y update
-sudo apt-get -q -y upgrade
-sudo apt-get -q -y autoremove
-sudo apt-get -q -y autoclean
-##############################################
-##############################################
-##############################################
-##############################################
-##############################################
+
+
 ##############################################
