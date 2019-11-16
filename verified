@@ -27,19 +27,6 @@ if [ $delConf == 'y' ]; then
         do
         sudo apt-get purge -y -q $i
     done
-    
-    gnome-terminal -e "dpkg -l | less"
-    while $loop; 
-        do
-        read -p "What programs would you like to delete?: " program
-        if [ $program == 'quit' ]; then
-            echo "Ending script..."
-            loop=false;
-        else
-            echo "Deleting $program ...";
-            sudo apt-get purge -q -y $program;
-        fi
-    done
 fi
 
 ##############################################
