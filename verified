@@ -30,27 +30,3 @@ for i in $(cat hackingprograms)
 
 sudo echo "allow-guest = false" >> /etc/lightdm/lightdm.conf
 sudo restart lightdm
-
-##############################################
-
-for i in $(cat downloadprograms)
-    do
-        sudo apt-get install -y -q $i
-    done
-    
-##############################################
-
-sudo echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
-sudo echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
-sudo echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
-sudo sysctl -p
-    
-##############################################
-sudo gedit /etc/securetty
-sudo chown root:root /etc/securetty
-sudo chmod 0600 /etc/securetty
-sudo echo "@everyone hard nproc 20" >> /etc/security/limits.conf
-##############################################
-
-
-##############################################
